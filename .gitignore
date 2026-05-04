@@ -1,0 +1,26 @@
+# Python environment and caches
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Project specific artifacts and data
+artifacts/
+logs/
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Packaging and distribution
+*.egg-info/
+dist/
+build/
+
+# OS specific files
+.DS_Store
+
+
+#artifacts
+artifacts/*
