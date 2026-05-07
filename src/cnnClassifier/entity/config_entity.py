@@ -21,3 +21,16 @@ class PrepareBaseModelConfig:
     params_weights: str # defined in params.yaml
 
     params_classes: int # defined in params.yaml
+
+
+@dataclass(frozen=True)
+class TrainingConfig:
+    root_dir: Path #from config.yaml
+    trained_model_path: Path #from config.yaml
+    updated_base_model_path: Path #the path is artifacts/prepare basemodel/base_model_updated.h5
+    training_data: Path #The training data is in artifacts/data_ingestion. Will be provided when calling, 
+    #from get_training_config(self) in this notebook
+    params_epochs: int #from params.yaml 
+    params_batch_size: int #from params.yaml 
+    params_is_augmentation: bool #from params.yaml 
+    params_image_size: list #from params.yaml 
