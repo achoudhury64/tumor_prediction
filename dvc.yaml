@@ -1,0 +1,66 @@
+#here we mention the stages of the pipeline, since we are doing the version control of the pipeline using DVC
+stages:
+#First is the data ingestion pipeline
+  data_ingestion:
+  #cmd tells which command to run to execute the stage 1 data ingestion pipeline. 
+    cmd: python src/cnnClassifier/pipeline/stage_01_data_ingestion.py
+    #here you mention all the dependencies that are required to run stage_01_data_ingestion.py. 
+    #Basically you need the file itself and the config.yaml. YOu have to mention the full path. 
+    deps:
+      - src/cnnClassifier/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+    #Basically the output that it will generate. In this case the unzipped CT scan folder with normal and tumor images. 
+      - artifacts/data_ingestion/kidney-ct-scan-image
+
+
+  prepare_base_model:
+  #The second is for the preparing of the base model pipeline
+    cmd: python src/cnnClassifier/pipeline/stage_02_prepare_base_model.py
+    deps:
+      - src/cnnClassifier/pipeline/stage_02_prepare_base_model.py
+      - config/config.yaml
+  #This pipeline needs parameters too, which are mentioned here. 
+    params:
+      - IMAGE_SIZE
+      - INCLUDE_TOP
+      - CLASSES
+      - WEIGHTS
+      - LEARNING_RATE
+    outs:
+      - artifacts/prepare_base_model
+
+
+
+  training:
+    cmd: python src/cnnClassifier/pipeline/stage_03_model_training.py
+    deps:
+      - src/cnnClassifier/pipeline/stage_03_model_training.py
+      - src/cnnClassifier/components/prepare_callbacks.py
+      - config/config.yaml
+      - artifacts/data_ingestion/kidney-ct-scan-image
+      - artifacts/prepare_base_model
+    params:
+      - IMAGE_SIZE
+      - EPOCHS
+      - BATCH_SIZE
+      - AUGMENTATION
+    outs:
+      - artifacts/training/model.h5
+
+
+  
+
+  evaluation:
+    cmd: python src/cnnClassifier/pipeline/stage_04_model_evaluation.py
+    deps:
+      - src/cnnClassifier/pipeline/stage_04_model_evaluation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/kidney-ct-scan-image
+      - artifacts/training/model.h5
+    params:
+      - IMAGE_SIZE
+      - BATCH_SIZE
+    metrics:
+    - scores.json:
+        cache: false

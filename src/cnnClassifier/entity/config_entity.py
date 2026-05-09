@@ -34,3 +34,13 @@ class TrainingConfig:
     params_batch_size: int #from params.yaml 
     params_is_augmentation: bool #from params.yaml 
     params_image_size: list #from params.yaml 
+
+
+@dataclass(frozen=True)
+class EvaluationConfig:
+    path_of_model: Path
+    training_data: Path
+    all_params: dict  #in earlier notebooks, params were taken separately, now the are taken at once as a dict
+    mlflow_uri: str
+    params_image_size: list
+    params_batch_size: int
