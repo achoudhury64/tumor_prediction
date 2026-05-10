@@ -73,7 +73,7 @@ MLFLOW_TRACKING_USERNAME=abhik.gatech
 MLFLOW_TRACKING_PASSWORD=108dbfd674e6fe14ea0f63a4695412231e69d6e5 
 python script.py
 
-Run this to export as env variables:
+Run this to export as env variables: Make sure you run these commands whenever you restart your terminal/ system.
 
 ```bash
 
